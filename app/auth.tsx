@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react"; // useStateを追加
 import {
     Image,
+    Modal,
     SafeAreaView,
     StyleSheet,
     Text,
@@ -9,17 +10,27 @@ import {
 } from "react-native";
 
 export default function AuthPage() {
+  // ポップアップの表示管理
+  const [modalVisible, setModalVisible] = useState(false);
+  // 新規登録かログインかの切り替え管理
+  const [isSignUp, setIsSignUp] = useState(true);
+
+  // ボタンを押した時の共通処理
+  const openModal = (signUpMode: boolean) => {
+    setIsSignUp(signUpMode);
+    setModalVisible(true);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {/* 背景用の足跡エリア */}
       <Image
-        source={require("../assets/images/icon01.png")} // もし可能ならPNGに書き出すのが一番簡単です
+        source={require("../assets/images/icon01.png")}
         style={[
           styles.footprint,
           { top: "25%", left: "10%", transform: [{ rotate: "-20deg" }] },
         ]}
       />
-      {/* 足跡2（左上・少し下） */}
       <Image
         source={require("../assets/images/icon01.png")}
         style={[
@@ -27,7 +38,6 @@ export default function AuthPage() {
           { top: "30%", left: "15%", transform: [{ rotate: "-10deg" }] },
         ]}
       />
-      {/* 足跡3（右上・少し下） */}
       <Image
         source={require("../assets/images/icon01.png")}
         style={[
@@ -35,7 +45,6 @@ export default function AuthPage() {
           { top: "50%", right: "10%", transform: [{ rotate: "20deg" }] },
         ]}
       />
-      {/* 足跡4（右下・少し下） */}
       <Image
         source={require("../assets/images/icon01.png")}
         style={[
@@ -43,23 +52,20 @@ export default function AuthPage() {
           { top: "55%", right: "15%", transform: [{ rotate: "10deg" }] },
         ]}
       />
+
       <View style={styles.content}>
-        {/* 上部のテキスト */}
         <View style={styles.textContainer}>
           <Text style={styles.mainText}>猫好き同士で繋がれる</Text>
           <Text style={styles.mainText}>優しいマッチングアプリ</Text>
         </View>
 
-        {/* メイン画像（猫と女性） */}
-        {/* 実際の画像ファイルがあれば assets に入れて source を書き換えてください */}
         <View style={styles.imageWrapper}>
           <Image
-            source={require("../assets//images/img01.png")} // 一旦テスト用画像
+            source={require("../assets/images/img01.png")}
             style={styles.mainImage}
           />
         </View>
 
-        {/* ページインジケーター（青いドット） */}
         <View style={styles.indicatorContainer}>
           <View style={[styles.dot, styles.activeDot]} />
           <View style={styles.dot} />
@@ -67,19 +73,75 @@ export default function AuthPage() {
           <View style={styles.dot} />
         </View>
 
-        {/* ボタンエリア */}
         <View style={styles.buttonContainer}>
-          {/* 新規会員登録ボタン */}
-          <TouchableOpacity style={styles.primaryButton} activeOpacity={0.8}>
+          <TouchableOpacity
+            style={styles.primaryButton}
+            onPress={() => openModal(true)} // 新規登録モード
+          >
             <Text style={styles.primaryButtonText}>新規会員登録をする</Text>
           </TouchableOpacity>
 
-          {/* ログインボタン */}
-          <TouchableOpacity style={styles.secondaryButton} activeOpacity={0.7}>
+          <TouchableOpacity
+            style={styles.secondaryButton}
+            onPress={() => openModal(false)} // ログインモード
+          >
             <Text style={styles.secondaryButtonText}>ログイン</Text>
           </TouchableOpacity>
         </View>
       </View>
+
+      {/* ポップアップ本体 */}
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalView}>
+            {/* ロゴ（ファイル名を確認してください） */}
+            <Image
+              source={require("../assets/images/logo.png")}
+              style={styles.modalLogo}
+            />
+
+            <TouchableOpacity style={styles.lineButton}>
+              <Image
+                source={require("../assets/images/icon02.png")}
+                style={[styles.modalLogo, { width: 60, height: 20 }]} // ここで個別に指定！
+              />
+              <Text style={styles.lineButtonText}>
+                {isSignUp ? "LINEでサインイン" : "LINEで続ける"}
+              </Text>
+            </TouchableOpacity>
+
+            <View style={styles.separatorContainer}>
+              <View style={styles.line} />
+              <Text style={styles.orText}>または</Text>
+              <View style={styles.line} />
+            </View>
+
+            <TouchableOpacity style={styles.snsButton}>
+              <Text style={styles.snsButtonText}>
+                {isSignUp ? "電話番号でサインイン" : "電話番号で続ける"}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.snsButton}>
+              <Text style={styles.snsButtonText}>
+                {isSignUp ? "Appleでサインイン" : "Appleで続ける"}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity
+            onPress={() => setModalVisible(false)}
+            style={styles.closeButton}
+          >
+            <Text style={styles.closeButtonText}>✕</Text>
+            <Text style={styles.closeButtonText}>閉じる</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -87,12 +149,13 @@ export default function AuthPage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FDFBEE", // デザイン通りのベージュ
+    backgroundColor: "#FDFBEE",
   },
   content: {
     flex: 1,
+    zIndex: 1,
     alignItems: "center",
-    justifyContent: "space-around", // 要素をバランスよく配置
+    justifyContent: "space-around",
     paddingVertical: 40,
   },
   textContainer: {
@@ -101,31 +164,21 @@ const styles = StyleSheet.create({
   mainText: {
     fontSize: 20,
     color: "#333",
-    fontWeight: 500,
+    fontWeight: "500",
     lineHeight: 32,
-    letterSpacing: 0,
     textAlign: "center",
   },
   footprint: {
-    position: "absolute", // 画面の好きな場所に置くために必須
-    width: 30, // 足跡の横幅（デザインに合わせて調整してください）
-    height: 30, // 足跡の高さ
-    zIndex: 0, // 他の要素の下に配置
-  },
-  // ------------------
-  content: {
-    flex: 1,
-    zIndex: 1, // コンテンツを足跡より上に
-    alignItems: "center",
-    justifyContent: "space-around",
-    paddingVertical: 40,
+    position: "absolute",
+    width: 30,
+    height: 30,
+    zIndex: 0,
   },
   imageWrapper: {
     width: 280,
     height: 280,
-    borderRadius: 140, // 正円にする
+    borderRadius: 140,
     overflow: "hidden",
-    borderWidth: 0,
   },
   mainImage: {
     width: "100%",
@@ -142,8 +195,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#D1D1D1",
   },
   activeDot: {
-    backgroundColor: "#3B76AD", // デザインの青
-    width: 25, // アクティブなドットだけ少し長く
+    backgroundColor: "#3B76AD",
+    width: 25,
   },
   buttonContainer: {
     width: "100%",
@@ -156,11 +209,6 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   primaryButtonText: {
     color: "#FFF",
@@ -181,4 +229,55 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+  // モーダル用のスタイル
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalView: {
+    width: "85%",
+    backgroundColor: "#FDFBEE",
+    borderRadius: 20,
+    padding: 30,
+    alignItems: "center",
+  },
+  modalLogo: {
+    width: 120,
+    height: 60,
+    resizeMode: "contain",
+    marginBottom: 20,
+  },
+  lineButton: {
+    backgroundColor: "#06C755",
+    width: "100%",
+    height: 50,
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  lineButtonText: { color: "#FFF", fontWeight: "bold" },
+  snsButton: {
+    backgroundColor: "#FFF",
+    width: "100%",
+    height: 50,
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: "#D1D1D1",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  snsButtonText: { color: "#333" },
+  separatorContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 15,
+  },
+  line: { flex: 1, height: 1, backgroundColor: "#D1D1D1" },
+  orText: { marginHorizontal: 10, color: "#999", fontSize: 12 },
+  closeButton: { marginTop: 10 },
+  closeButtonText: { color: "#fff", textAlign: "center" },
 });
