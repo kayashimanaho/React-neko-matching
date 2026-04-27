@@ -1,4 +1,5 @@
-import React, { useState } from "react"; // useStateを追加
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
 import {
     Image,
     Modal,
@@ -10,15 +11,18 @@ import {
 } from "react-native";
 
 export default function AuthPage() {
-  // ポップアップの表示管理
+  const router = useRouter();
   const [modalVisible, setModalVisible] = useState(false);
-  // 新規登録かログインかの切り替え管理
   const [isSignUp, setIsSignUp] = useState(true);
 
-  // ボタンを押した時の共通処理
   const openModal = (signUpMode: boolean) => {
     setIsSignUp(signUpMode);
     setModalVisible(true);
+  };
+
+  const handleSignIn = () => {
+    setModalVisible(false);
+    router.replace("/purpose");
   };
 
   return (
@@ -105,10 +109,10 @@ export default function AuthPage() {
               style={styles.modalLogo}
             />
 
-            <TouchableOpacity style={styles.lineButton}>
+            <TouchableOpacity style={styles.lineButton} onPress={handleSignIn}>
               <Image
                 source={require("../assets/images/icon02.png")}
-                style={[styles.modalLogo, { width: 60, height: 20 }]} // ここで個別に指定！
+                style={[styles.modalLogo, { width: 60, height: 20 }]}
               />
               <Text style={styles.lineButtonText}>
                 {isSignUp ? "LINEでサインイン" : "LINEで続ける"}
@@ -121,13 +125,13 @@ export default function AuthPage() {
               <View style={styles.line} />
             </View>
 
-            <TouchableOpacity style={styles.snsButton}>
+            <TouchableOpacity style={styles.snsButton} onPress={handleSignIn}>
               <Text style={styles.snsButtonText}>
                 {isSignUp ? "電話番号でサインイン" : "電話番号で続ける"}
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.snsButton}>
+            <TouchableOpacity style={styles.snsButton} onPress={handleSignIn}>
               <Text style={styles.snsButtonText}>
                 {isSignUp ? "Appleでサインイン" : "Appleで続ける"}
               </Text>
