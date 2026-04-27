@@ -1,18 +1,13 @@
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type Purpose = "friend" | "partner" | null;
 
 export default function PurposeScreen() {
   const router = useRouter();
   const [selected, setSelected] = useState<Purpose>(null);
-
-  const handleNext = () => {
-    if (selected) {
-      router.push("/has-cat");
-    }
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -50,7 +45,7 @@ export default function PurposeScreen() {
 
         <TouchableOpacity
           style={[styles.nextButton, !selected && styles.nextButtonDisabled]}
-          onPress={handleNext}
+          onPress={() => selected && router.push("/has-cat")}
           disabled={!selected}
         >
           <Text style={styles.nextButtonText}>次へ進む　›</Text>
@@ -63,7 +58,7 @@ export default function PurposeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FDFBEE",
+    backgroundColor: "#f5f3ea",
   },
   content: {
     flexGrow: 1,
@@ -73,70 +68,70 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
-    color: "#333",
+    color: "#2d6db5",
     textAlign: "center",
-    lineHeight: 36,
-    marginBottom: 12,
+    lineHeight: 34,
+    marginBottom: 10,
   },
   subtitle: {
-    fontSize: 14,
-    color: "#999",
-    marginBottom: 40,
+    fontSize: 13,
+    color: "#a0a0a0",
+    marginBottom: 36,
   },
   options: {
     width: "100%",
-    gap: 16,
-    marginBottom: 48,
+    gap: 14,
+    marginBottom: 40,
   },
   optionCard: {
     width: "100%",
-    backgroundColor: "#FFF",
+    backgroundColor: "#fff",
     borderRadius: 16,
     borderWidth: 2,
-    borderColor: "#E0E0E0",
-    padding: 24,
+    borderColor: "#d0ccc8",
+    padding: 22,
     alignItems: "center",
-    gap: 8,
+    gap: 6,
   },
   optionCardSelected: {
-    borderColor: "#3B76AD",
-    backgroundColor: "#EBF3FA",
+    borderColor: "#3574bc",
+    backgroundColor: "#eaf1fb",
   },
   optionIcon: {
-    fontSize: 40,
+    fontSize: 38,
   },
   optionTitle: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "bold",
-    color: "#333",
+    color: "#444",
   },
   optionTitleSelected: {
-    color: "#3B76AD",
+    color: "#3574bc",
   },
   optionDesc: {
     fontSize: 13,
-    color: "#999",
+    color: "#a0a0a0",
     textAlign: "center",
   },
   optionDescSelected: {
-    color: "#3B76AD",
+    color: "#3574bc",
   },
   nextButton: {
     width: "100%",
-    height: 56,
-    backgroundColor: "#3B76AD",
-    borderRadius: 28,
+    height: 54,
+    backgroundColor: "#3574bc",
+    borderRadius: 27,
     alignItems: "center",
     justifyContent: "center",
   },
   nextButtonDisabled: {
-    backgroundColor: "#C0C0C0",
+    backgroundColor: "#c8c8c8",
   },
   nextButtonText: {
-    color: "#FFF",
-    fontSize: 18,
+    color: "#fff",
+    fontSize: 16,
     fontWeight: "bold",
   },
 });

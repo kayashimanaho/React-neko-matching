@@ -1,13 +1,10 @@
 import { useRouter } from "expo-router";
 import React from "react";
-import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HasCatScreen() {
   const router = useRouter();
-
-  const handleSelect = () => {
-    router.push("/user-info");
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -15,11 +12,17 @@ export default function HasCatScreen() {
         <Text style={styles.title}>現在猫ちゃんと{"\n"}一緒に住んでいますか？</Text>
 
         <View style={styles.options}>
-          <TouchableOpacity style={styles.primaryButton} onPress={handleSelect}>
+          <TouchableOpacity
+            style={styles.primaryButton}
+            onPress={() => router.push("/user-info")}
+          >
             <Text style={styles.primaryButtonText}>一緒に住んでいる 🐱</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.secondaryButton} onPress={handleSelect}>
+          <TouchableOpacity
+            style={styles.secondaryButton}
+            onPress={() => router.push("/user-info")}
+          >
             <Text style={styles.secondaryButtonText}>今は居ない</Text>
           </TouchableOpacity>
         </View>
@@ -35,7 +38,7 @@ export default function HasCatScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FDFBEE",
+    backgroundColor: "#f5f3ea",
   },
   content: {
     flex: 1,
@@ -44,50 +47,50 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
-    color: "#333",
+    color: "#2d6db5",
     textAlign: "center",
-    lineHeight: 36,
-    marginBottom: 60,
+    lineHeight: 34,
+    marginBottom: 56,
   },
   options: {
     width: "100%",
-    gap: 16,
+    gap: 14,
   },
   primaryButton: {
     width: "100%",
-    height: 56,
-    backgroundColor: "#3B76AD",
-    borderRadius: 28,
+    height: 54,
+    backgroundColor: "#3574bc",
+    borderRadius: 27,
     alignItems: "center",
     justifyContent: "center",
   },
   primaryButtonText: {
-    color: "#FFF",
-    fontSize: 18,
+    color: "#fff",
+    fontSize: 16,
     fontWeight: "bold",
   },
   secondaryButton: {
     width: "100%",
-    height: 56,
-    backgroundColor: "#FFF",
-    borderRadius: 28,
-    borderWidth: 1,
-    borderColor: "#3B76AD",
+    height: 54,
+    backgroundColor: "#fff",
+    borderRadius: 27,
+    borderWidth: 1.5,
+    borderColor: "#3574bc",
     alignItems: "center",
     justifyContent: "center",
   },
   secondaryButtonText: {
-    color: "#3B76AD",
-    fontSize: 18,
+    color: "#3574bc",
+    fontSize: 16,
     fontWeight: "bold",
   },
   backLink: {
-    marginTop: 32,
+    marginTop: 28,
   },
   backLinkText: {
-    color: "#999",
-    fontSize: 14,
+    color: "#a0a0a0",
+    fontSize: 13,
   },
 });
