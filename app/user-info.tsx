@@ -162,7 +162,7 @@ export default function UserInfoScreen() {
 
         <TouchableOpacity
           style={[styles.nextButton, !canProceed && styles.nextButtonDisabled]}
-          onPress={() => canProceed && router.push("/(tabs)")}
+          onPress={() => canProceed && router.push("/user-values")}
           disabled={!canProceed}
         >
           <Text style={styles.nextButtonText}>次に進む　›</Text>

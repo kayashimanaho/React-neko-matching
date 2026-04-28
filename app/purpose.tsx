@@ -1,65 +1,47 @@
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-type Purpose = "friend" | "partner" | null;
-
 export default function PurposeScreen() {
   const router = useRouter();
-  const [selected, setSelected] = useState<Purpose>(null);
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>どんな相手を{"\n"}探していますか？</Text>
-        <Text style={styles.subtitle}>探したい相手を教えてください</Text>
+        <Text style={styles.subtitle}>後から設定は変えられます！</Text>
 
         <View style={styles.options}>
           <TouchableOpacity
-            style={[styles.optionCard, selected === "friend" && styles.optionCardSelected]}
-            onPress={() => setSelected("friend")}
+            style={[styles.optionButton, styles.blueButton]}
+            onPress={() => router.push("/has-cat")}
           >
-            <Text style={styles.optionIcon}>🐱</Text>
-            <Text style={[styles.optionTitle, selected === "friend" && styles.optionTitleSelected]}>
-              猫友を探す
-            </Text>
-            <Text style={[styles.optionDesc, selected === "friend" && styles.optionDescSelected]}>
-              猫好き同士でつながりたい
-            </Text>
+            <Text style={styles.optionEmoji}>🐱👩</Text>
+            <View style={styles.optionTextWrap}>
+              <Text style={styles.optionTitle}>猫友を探す</Text>
+              <Text style={styles.optionDesc}>猫の話ができる友達を見つけたい</Text>
+            </View>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={[styles.optionCard, selected === "partner" && styles.optionCardSelected]}
-            onPress={() => setSelected("partner")}
+            style={[styles.optionButton, styles.greenButton]}
+            onPress={() => router.push("/has-cat")}
           >
-            <Text style={styles.optionIcon}>💞</Text>
-            <Text style={[styles.optionTitle, selected === "partner" && styles.optionTitleSelected]}>
-              どんな人も気軽に入れる
-            </Text>
-            <Text style={[styles.optionDesc, selected === "partner" && styles.optionDescSelected]}>
-              恋愛も友達も幅広くつながりたい
-            </Text>
+            <Text style={styles.optionEmoji}>💑</Text>
+            <View style={styles.optionTextWrap}>
+              <Text style={styles.optionTitle}>恋人も視野に入れる</Text>
+              <Text style={styles.optionDesc}>将来も猫と暮らせる人に出会いたい</Text>
+            </View>
           </TouchableOpacity>
         </View>
-
-        <TouchableOpacity
-          style={[styles.nextButton, !selected && styles.nextButtonDisabled]}
-          onPress={() => selected && router.push("/has-cat")}
-          disabled={!selected}
-        >
-          <Text style={styles.nextButtonText}>次へ進む　›</Text>
-        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f5f3ea",
-  },
+  container: { flex: 1, backgroundColor: "#f5f3ea" },
   content: {
     flexGrow: 1,
     paddingHorizontal: 24,
@@ -68,70 +50,38 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 22,
+    fontSize: 26,
     fontWeight: "bold",
-    color: "#2d6db5",
+    color: "#1a1a3e",
     textAlign: "center",
-    lineHeight: 34,
-    marginBottom: 10,
+    lineHeight: 38,
+    marginBottom: 8,
   },
   subtitle: {
     fontSize: 13,
     color: "#a0a0a0",
-    marginBottom: 36,
+    marginBottom: 48,
+    textAlign: "center",
   },
-  options: {
+  options: { width: "100%", gap: 16 },
+  optionButton: {
     width: "100%",
-    gap: 14,
-    marginBottom: 40,
-  },
-  optionCard: {
-    width: "100%",
-    backgroundColor: "#fff",
-    borderRadius: 16,
-    borderWidth: 2,
-    borderColor: "#d0ccc8",
-    padding: 22,
+    height: 80,
+    borderRadius: 40,
+    flexDirection: "row",
     alignItems: "center",
-    gap: 6,
+    paddingHorizontal: 24,
+    gap: 14,
   },
-  optionCardSelected: {
-    borderColor: "#3574bc",
-    backgroundColor: "#eaf1fb",
-  },
-  optionIcon: {
-    fontSize: 38,
-  },
+  blueButton: { backgroundColor: "#3574bc" },
+  greenButton: { backgroundColor: "#7aad5a" },
+  optionEmoji: { fontSize: 28 },
+  optionTextWrap: { flex: 1 },
   optionTitle: {
     fontSize: 17,
     fontWeight: "bold",
-    color: "#444",
-  },
-  optionTitleSelected: {
-    color: "#3574bc",
-  },
-  optionDesc: {
-    fontSize: 13,
-    color: "#a0a0a0",
-    textAlign: "center",
-  },
-  optionDescSelected: {
-    color: "#3574bc",
-  },
-  nextButton: {
-    width: "100%",
-    height: 54,
-    backgroundColor: "#3574bc",
-    borderRadius: 27,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  nextButtonDisabled: {
-    backgroundColor: "#c8c8c8",
-  },
-  nextButtonText: {
     color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
+    marginBottom: 2,
   },
+  optionDesc: { fontSize: 12, color: "rgba(255,255,255,0.85)" },
 });

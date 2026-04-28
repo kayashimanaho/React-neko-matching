@@ -16,6 +16,12 @@ export default function RootLayout() {
         <Stack.Screen name="purpose" />
         <Stack.Screen name="has-cat" />
         <Stack.Screen name="user-info" />
+        <Stack.Screen name="user-values" />
+        <Stack.Screen name="hobbies" />
+        <Stack.Screen name="cat-time" />
+        <Stack.Screen name="cat-info" />
+        <Stack.Screen name="ai-profile" />
+        <Stack.Screen name="allergy" />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
       </Stack>
